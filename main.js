@@ -31,6 +31,19 @@ SkyPrepApi.prototype.get = function(methodName, obj){
 	});
 };
 
-var my_api = new SkyPrepApi(api, acct);
+SkyPrepApi.prototype.post = function(methodName, obj){
+	if (typeof obj === 'undefined') {obj = {};}
+	var params = extend(this.hash, obj);
+	request.get(baseURL + '/' + methodName)
+	.send(params)
+	.type('application/json')
+	.end(function(err, res){
+		if (err) {
+			console.log(err);
+		} else {
+			console.log(res.body);
+		}
+	});
+};
 
-my_api.get('test_connection');
+var my_api = new SkyPrepApi(api, acct);

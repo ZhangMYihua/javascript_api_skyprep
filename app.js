@@ -72,18 +72,14 @@ SkyPrepApi.prototype.initializer = function() {
 	});
 };
 
+
+
 var my_api = new SkyPrepApi(api, acct);
+
 
 my_api.initializer().then(function() {
 	console.log(my_api);
-	my_api.test_connection().then(function(data) {
-		console.log(data);
-	})
 });
-
-my_api.get('test_connection', {}).then(function(data){
-	console.log(data);
-})
 
 
 // SkyPrepApi.prototype.initialize = function() {

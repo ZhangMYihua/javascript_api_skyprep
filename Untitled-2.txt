@@ -1,0 +1,22 @@
+var api = new SkyPrepApi();
+
+var d = api.get('all_users', {})
+
+d.then(function(users) {
+	//res_body is now all users object parsed as JSON
+	var user = users[0];
+	
+	return api.get('get_user_courses', { "user_email" : user.email });
+	
+}).then(function(courses) {
+	//courses will be the users courses
+	
+	var first_course = courses[0];
+	
+	return api.get('get_course_users', { "course_id" : first_course.id});
+		
+}).then(function(course_users) {
+	
+}).error(function(err) {
+	//Some error happened along the way
+})

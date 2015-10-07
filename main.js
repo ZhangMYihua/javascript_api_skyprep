@@ -1,7 +1,7 @@
 var request = require('superagent');
 var Q = require('q');
 
-var api = 'GjNHirhJC0TZ1nmJFtHP0IWfT';
+var api  = 'GjNHirhJC0TZ1nmJFtHP0IWfT';
 var acct = 'learnabli.skyprepapp.com';
 var hash = { "api_key" : api, "acct_key" : acct };
 var baseURL = 'https://api.skyprep.io/admin/api';
@@ -14,13 +14,13 @@ function extend(a, b){
 };
 
 var SkyPrepApi = function(api_key, acct_key){
-	this.hash =  {"api_key" : api_key, "acct_key" : acct_key};
+	this.hash =  { "api_key" : api_key, "acct_key" : acct_key };
 };
 
-
+ 
 SkyPrepApi.prototype.get = function(methodName, obj) {
 	
-	var p = new Q.Defer();
+	var p = Q.defer();
 	
 	if (typeof obj === 'undefined') {obj = {};}
 	var params = extend(this.hash, obj);
@@ -29,7 +29,7 @@ SkyPrepApi.prototype.get = function(methodName, obj) {
 	.type('application/json')
 	.end(function(err, res){
 		if (err) {
-			p.reject(err);
+			p.reject(new Error(err));
 			// console.log(err);
 		} else {
 			p.resolve(res.body);
@@ -40,28 +40,9 @@ SkyPrepApi.prototype.get = function(methodName, obj) {
 	
 };
 
-
-
-
-// SkyPrepApi.prototype.get = function(methodName, obj){
-// 	if (typeof obj === 'undefined') {obj = {};}
-// 	var params = extend(this.hash, obj);
-// 	request.get(baseURL + '/' + methodName)
-// 	.send(params)
-// 	.type('application/json')
-// 	.end(function(err, res){
-// 		if (err) {
-// 			console.log(err);
-// 		} else {
-// 			return (res.body);
-// 		}
-// 	});
-	
-// };
-
 SkyPrepApi.prototype.post = function(methodName, obj){
 	
-	var p = new Q.Defer();
+	var p = Q.defer();
 	
 	if (typeof obj === 'undefined') {obj = {};}
 	var params = extend(this.hash, obj);
@@ -81,5 +62,4 @@ SkyPrepApi.prototype.post = function(methodName, obj){
 
 var my_api = new SkyPrepApi(api, acct);
 
-var calls = my_api.get('available_api_calls', {});
-console.log(JSON.parse(calls));
+var calls = my_api.get('get_users', {});

@@ -18,7 +18,6 @@ function extend(a, b){
 var SkyPrepApi = function(api_key, acct_key){
 	this.hash =  { "api_key" : api_key, "acct_key" : acct_key };
 };
-
  
 SkyPrepApi.prototype.get = function(methodName, obj) {
 	var p = Q.defer();
@@ -61,43 +60,17 @@ SkyPrepApi.prototype.post = function(methodName, obj){
 };
 
 SkyPrepApi.prototype.initializer = function() {
-	
+	var instance = this;
 	return this.get('available_api_calls', {}).then(function(list_of_api_calls) {
 		for (var x = 0; x < list_of_api_calls.length; x++) {
-			var current_call = list_of_api_calls[x];
-			SkyPrepApi.prototype[current_call] = function(params) {
-				return this.get(current_call, params);
-			};
+			(function (){
+				var current_call = list_of_api_calls[x];
+				instance[current_call] = function(data) {
+				return instance.get(current_call, data)			
+				}; 
+			})();
 		}
 	});
 };
 
 
-
-var my_api = new SkyPrepApi(api, acct);
-
-
-my_api.initializer().then(function() {
-	console.log(my_api);
-});
-
-
-// SkyPrepApi.prototype.initialize = function() {
-// 	var that = this;
-// 		return this.get('available_api_calls', {}).then(function(list_of_api_calls) {
-// 		for (var x = 0; x < list_of_api_calls.length; x++) {
-// 			that.list_of_api_calls[x] = function(params) {
-// 				that.get(list_of_api_calls[x], params)
-// 			}
-// 		}
-// 	});
-// }
-
-// my_api.initialize();
-// my_api.get_users({});
-
-// my_api.get('available_api_calls', {}).then(function(data){
-// 	for (var x = 0; x < data.length; x++) {
-// 		my_api[data[x]];
-// 	}
-// });

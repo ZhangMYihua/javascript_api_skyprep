@@ -3,7 +3,6 @@ var Q = require('q');
 
 var api  = 'GjNHirhJC0TZ1nmJFtHP0IWfT';
 var acct = 'learnabli.skyprepapp.com';
-var hash = { "api_key" : api, "acct_key" : acct };
 var baseURL = 'https://api.skyprep.io/admin/api';
 var postPrefixes = ['update', 'destroy', 'create', 'remove', 'enroll'];
 
@@ -73,4 +72,11 @@ SkyPrepApi.prototype.initializer = function() {
 	});
 };
 
+var my_api = new SkyPrepApi(api, acct);
 
+
+my_api.initializer().then(function() {
+	my_api.get_course({"course_id" : 20751}).then(function(data){
+		console.log(data);
+	})
+});
